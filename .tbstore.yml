@@ -1,0 +1,13 @@
+module_name: Block Facebook Share
+compatible_versions: 1.0.0+
+author: thirty bees
+category: front office
+tags:
+  - facebook
+  - social media
+  - social sharing
+description_short: The block Facebook share module allows you to add a facebook share button to your product pages.
+description: description.md
+images:
+  - image-1.png
+license: AFL
