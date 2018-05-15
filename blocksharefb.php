@@ -42,7 +42,7 @@ class blocksharefb extends Module
 
 		parent::__construct();
 
-		$this->displayName = $this->l('Facebook Share Button');
+		$this->displayName = $this->l('Block Facebook Share');
 		$this->description = $this->l('Allows customers to share products or content on Facebook.');
 		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.99.99');
 	}
