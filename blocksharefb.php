@@ -37,11 +37,13 @@ class blocksharefb extends Module
 			$this->tab = 'Blocks';
 		$this->version = '2.0.0';
 		$this->author = 'thirty bees';
+		$this->need_instance = 0;
 
 		parent::__construct();
 
 		$this->displayName = $this->l('Block Facebook Share');
 		$this->description = $this->l('Allows customers to share products or content on Facebook.');
+		$this->tb_versions_compliancy = '> 1.0.0';
 		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.99.99');
 	}
 
