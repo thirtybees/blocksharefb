@@ -31,10 +31,7 @@ class blocksharefb extends Module
 	public function __construct()
 	{
 		$this->name = 'blocksharefb';
-		if(version_compare(_PS_VERSION_, '1.4.0.0') >= 0)
-			$this->tab = 'front_office_features';
-		else
-			$this->tab = 'Blocks';
+		$this->tab = 'front_office_features';
 		$this->version = '2.0.1';
 		$this->author = 'thirty bees';
 		$this->need_instance = 0;
