@@ -44,6 +44,7 @@ class blocksharefb extends Module
 		$this->displayName = $this->l('Block Facebook Share');
 		$this->description = $this->l('Allows customers to share products or content on Facebook.');
 		$this->tb_versions_compliancy = '> 1.0.0';
+		$this->tb_min_version = '1.0.0';
 		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.99.99');
 	}
 
