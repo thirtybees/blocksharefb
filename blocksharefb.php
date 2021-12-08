@@ -28,6 +28,12 @@ if (!defined('_CAN_LOAD_FILES_'))
 
 class blocksharefb extends Module
 {
+
+    /**
+     * Constructor
+     *
+     * @throws PrestaShopException
+     */
 	public function __construct()
 	{
 		$this->name = 'blocksharefb';
@@ -42,33 +48,52 @@ class blocksharefb extends Module
 		$this->description = $this->l('Allows customers to share products or content on Facebook.');
 		$this->tb_versions_compliancy = '> 1.0.0';
 		$this->tb_min_version = '1.0.0';
-		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.6.99.99');
+		$this->ps_versions_compliancy = ['min' => '1.6', 'max' => '1.6.99.99'];
 	}
 
+    /**
+     * Module installation method
+     *
+     * @return bool
+     * @throws PrestaShopDatabaseException
+     * @throws PrestaShopException
+     */
 	public function install()
 	{
 		return (parent::install() AND $this->registerHook('extraLeft'));
 	}
 
+    /**
+     * Module uninstallation method
+     *
+     * @return bool
+     * @throws PrestaShopDatabaseException
+     * @throws PrestaShopException
+     */
 	public function uninstall()
 	{
 		//Delete configuration
 		return (parent::uninstall() AND $this->unregisterHook(Hook::getIdByName('extraLeft')));
 	}
 
+    /**
+     * Hook method
+     *
+     * @param array $params
+     * @return string
+     * @throws PrestaShopException
+     * @throws SmartyException
+     */
 	public function hookExtraLeft($params)
 	{
-		global $smarty, $cookie, $link;
-
 		$id_product = Tools::getValue('id_product');
 
-		if (isset($id_product) && $id_product != '')
-		{
+		if (isset($id_product) && $id_product != '') {
 			$product_infos = $this->context->controller->getProduct();
-			$smarty->assign(array(
-				'product_link' => urlencode($link->getProductLink($product_infos)),
+			$this->context->smarty->assign([
+				'product_link' => urlencode($this->context->link->getProductLink($product_infos)),
 				'product_title' => urlencode($product_infos->name),
-			));
+			]);
 
 			return $this->display(__FILE__, 'blocksharefb.tpl');
 		} else {
