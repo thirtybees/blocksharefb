@@ -24,7 +24,7 @@
  */
 
 if (!defined('_CAN_LOAD_FILES_'))
-	exit;
+    exit;
 
 class blocksharefb extends Module
 {
@@ -34,22 +34,22 @@ class blocksharefb extends Module
      *
      * @throws PrestaShopException
      */
-	public function __construct()
-	{
-		$this->name = 'blocksharefb';
-		$this->tab = 'front_office_features';
-		$this->version = '2.0.2';
-		$this->author = 'thirty bees';
-		$this->need_instance = 0;
+    public function __construct()
+    {
+        $this->name = 'blocksharefb';
+        $this->tab = 'front_office_features';
+        $this->version = '2.0.2';
+        $this->author = 'thirty bees';
+        $this->need_instance = 0;
 
-		parent::__construct();
+        parent::__construct();
 
-		$this->displayName = $this->l('Block Facebook Share');
-		$this->description = $this->l('Allows customers to share products or content on Facebook.');
-		$this->tb_versions_compliancy = '> 1.0.0';
-		$this->tb_min_version = '1.0.0';
-		$this->ps_versions_compliancy = ['min' => '1.6', 'max' => _PS_VERSION_];
-	}
+        $this->displayName = $this->l('Block Facebook Share');
+        $this->description = $this->l('Allows customers to share products or content on Facebook.');
+        $this->tb_versions_compliancy = '> 1.0.0';
+        $this->tb_min_version = '1.0.0';
+        $this->ps_versions_compliancy = ['min' => '1.6', 'max' => _PS_VERSION_];
+    }
 
     /**
      * Module installation method
@@ -58,13 +58,13 @@ class blocksharefb extends Module
      * @throws PrestaShopDatabaseException
      * @throws PrestaShopException
      */
-	public function install()
-	{
-		return (
+    public function install()
+    {
+        return (
             parent::install() &&
             $this->registerHook('displayLeftColumnProduct')
         );
-	}
+    }
 
     /**
      * Hook method
@@ -74,8 +74,8 @@ class blocksharefb extends Module
      * @throws PrestaShopException
      * @throws SmartyException
      */
-	public function hookDisplayLeftColumnProduct($params)
-	{
+    public function hookDisplayLeftColumnProduct($params)
+    {
         $controller = $this->context->controller;
         if ($controller instanceof ProductController) {
             $id_product = Tools::getValue('id_product');
@@ -91,5 +91,29 @@ class blocksharefb extends Module
             }
         }
         return '';
-	}
+    }
+
+    /**
+     * @param array $params
+     * @return string
+     * @throws PrestaShopException
+     * @throws SmartyException
+     */
+    public function hookDisplayRightColumnProduct($params)
+    {
+        return $this->hookDisplayLeftColumnProduct($params);
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return string
+     *
+     * @throws PrestaShopException
+     * @throws SmartyException
+     */
+    public function hookDisplayProductButtons($params)
+    {
+        return $this->hookDisplayLeftColumnProduct($params);
+    }
 }
