@@ -13,6 +13,7 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@thirtybees.com so we can send you a copy immediately.
+ g
  *
  * @author    thirty bees <modules@thirtybees.com>
  * @author    PrestaShop SA <contact@prestashop.com>
@@ -23,5 +24,5 @@
  *}
 
 <li id="left_share_fb">
-	<a href="http://www.facebook.com/sharer.php?u={$product_link}&amp;t={$product_title}" class="_blank">{l s='Share on Facebook!' mod='blocksharefb'}</a>
+	<a href="https://www.facebook.com/sharer.php?u={$product_link}&amp;t={$product_title}" class="_blank">{l s='Share on Facebook!' mod='blocksharefb'}</a>
 </li>
