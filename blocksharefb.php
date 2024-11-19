@@ -22,10 +22,6 @@
  * @license   Academic Free License (AFL 3.0)
  * PrestaShop is an internationally registered trademark of PrestaShop SA.
  */
-
-if (!defined('_CAN_LOAD_FILES_'))
-    exit;
-
 class blocksharefb extends Module
 {
 
