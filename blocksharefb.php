@@ -48,7 +48,7 @@ class blocksharefb extends Module
 		$this->description = $this->l('Allows customers to share products or content on Facebook.');
 		$this->tb_versions_compliancy = '> 1.0.0';
 		$this->tb_min_version = '1.0.0';
-		$this->ps_versions_compliancy = ['min' => '1.6', 'max' => '1.6.99.99'];
+		$this->ps_versions_compliancy = ['min' => '1.6', 'max' => _PS_VERSION_];
 	}
 
     /**
@@ -60,20 +60,10 @@ class blocksharefb extends Module
      */
 	public function install()
 	{
-		return (parent::install() AND $this->registerHook('extraLeft'));
-	}
-
-    /**
-     * Module uninstallation method
-     *
-     * @return bool
-     * @throws PrestaShopDatabaseException
-     * @throws PrestaShopException
-     */
-	public function uninstall()
-	{
-		//Delete configuration
-		return (parent::uninstall() AND $this->unregisterHook(Hook::getIdByName('extraLeft')));
+		return (
+            parent::install() &&
+            $this->registerHook('displayLeftColumnProduct')
+        );
 	}
 
     /**
@@ -84,20 +74,22 @@ class blocksharefb extends Module
      * @throws PrestaShopException
      * @throws SmartyException
      */
-	public function hookExtraLeft($params)
+	public function hookDisplayLeftColumnProduct($params)
 	{
-		$id_product = Tools::getValue('id_product');
+        $controller = $this->context->controller;
+        if ($controller instanceof ProductController) {
+            $id_product = Tools::getValue('id_product');
 
-		if (isset($id_product) && $id_product != '') {
-			$product_infos = $this->context->controller->getProduct();
-			$this->context->smarty->assign([
-				'product_link' => urlencode($this->context->link->getProductLink($product_infos)),
-				'product_title' => urlencode($product_infos->name),
-			]);
+            if (isset($id_product) && $id_product != '') {
+                $product_infos = $controller->getProduct();
+                $this->context->smarty->assign([
+                    'product_link' => urlencode($this->context->link->getProductLink($product_infos)),
+                    'product_title' => urlencode($product_infos->name),
+                ]);
 
-			return $this->display(__FILE__, 'blocksharefb.tpl');
-		} else {
-			return '';
-		}
+                return $this->display(__FILE__, 'blocksharefb.tpl');
+            }
+        }
+        return '';
 	}
 }
