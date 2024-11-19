@@ -62,7 +62,8 @@ class blocksharefb extends Module
     {
         return (
             parent::install() &&
-            $this->registerHook('displayLeftColumnProduct')
+            $this->registerHook('displayLeftColumnProduct') &&
+            $this->registerHook('displayCMSBelow')
         );
     }
 
@@ -78,16 +79,9 @@ class blocksharefb extends Module
     {
         $controller = $this->context->controller;
         if ($controller instanceof ProductController) {
-            $id_product = Tools::getValue('id_product');
-
-            if (isset($id_product) && $id_product != '') {
-                $product_infos = $controller->getProduct();
-                $this->context->smarty->assign([
-                    'product_link' => urlencode($this->context->link->getProductLink($product_infos)),
-                    'product_title' => urlencode($product_infos->name),
-                ]);
-
-                return $this->display(__FILE__, 'blocksharefb.tpl');
+            $product = $controller->getProduct();
+            if (Validate::isLoadedObject($product)) {
+                return $this->renderTemplate('product-left.tpl', $this->context->link->getProductLink($product), $product->name);
             }
         }
         return '';
@@ -101,7 +95,14 @@ class blocksharefb extends Module
      */
     public function hookDisplayRightColumnProduct($params)
     {
-        return $this->hookDisplayLeftColumnProduct($params);
+        $controller = $this->context->controller;
+        if ($controller instanceof ProductController) {
+            $product = $controller->getProduct();
+            if (Validate::isLoadedObject($product)) {
+                return $this->renderTemplate('product-right.tpl', $this->context->link->getProductLink($product), $product->name);
+            }
+        }
+        return '';
     }
 
     /**
@@ -114,6 +115,52 @@ class blocksharefb extends Module
      */
     public function hookDisplayProductButtons($params)
     {
-        return $this->hookDisplayLeftColumnProduct($params);
+        $controller = $this->context->controller;
+        if ($controller instanceof ProductController) {
+            $product = $controller->getProduct();
+            if (Validate::isLoadedObject($product)) {
+                return $this->renderTemplate('product-buttons.tpl', $this->context->link->getProductLink($product), $product->name);
+            }
+        }
+        return '';
+    }
+
+    /**
+     * @param $params
+     *
+     * @return string
+     *
+     * @throws PrestaShopException
+     * @throws SmartyException
+     */
+    public function hookDisplayCMSBelow($params)
+    {
+        $controller = $this->context->controller;
+        if ($controller instanceof CmsController) {
+            if (Validate::isLoadedObject($controller->cms)) {
+                $cms = $controller->cms;
+                return $this->renderTemplate('cms.tpl', $this->context->link->getCMSLink($cms), $cms->meta_title);
+            }
+        }
+        return '';
+    }
+
+    /**
+     * @param string $template
+     * @param string $link
+     * @param string $title
+     *
+     * @return string
+     *
+     * @throws PrestaShopException
+     * @throws SmartyException
+     */
+    protected function renderTemplate($template, $link, $title)
+    {
+        $this->context->smarty->assign([
+            'shareLink' => $link,
+            'shareTitle' => $title,
+        ]);
+        return $this->display(__FILE__, $template);
     }
 }
